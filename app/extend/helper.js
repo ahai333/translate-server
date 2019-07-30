@@ -23,9 +23,10 @@ module.exports = {
   },
   // 获取时间差
   getduration(value) {
-    var secondTime = parseInt(value / 1000) // 秒
-    var minuteTime = 0 // 分
-    var hourTime = 0 // 小时
+    let secondTime = parseInt(value / 1000) // 秒
+    let minuteTime = 0 // 分
+    let hourTime = 0 // 小时
+    let DayTime = 0 //天
     if (secondTime > 60) {
       //如果秒数大于60，将秒数转换成整数
       //获取分钟，除以60取整数，得到整数分钟
@@ -38,6 +39,12 @@ module.exports = {
         hourTime = parseInt(minuteTime / 60)
         //获取小时后取佘的分，获取分钟除以60取佘的分
         minuteTime = parseInt(minuteTime % 60)
+
+        if(hourTime > 24){
+            DayTime = parseInt(hourTime / 24)
+
+            hourTime = parseInt(minuteTime % 24)
+        }
       }
     }
     var result = '' + parseInt(secondTime) + '秒'
@@ -48,6 +55,9 @@ module.exports = {
     if (hourTime > 0) {
       result = '' + parseInt(hourTime) + '小时' + result
     }
+    if (DayTime > 0) {
+        result = '' + parseInt(DayTime) + '天' + result
+      }
     return result
   }
 }

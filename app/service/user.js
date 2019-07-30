@@ -4,27 +4,24 @@ const Service = require('egg').Service
 
 class UserService extends Service {
   async status() {
-    const result = await this.app.mysql.query('tb_Dept', { Dept: '部门一' }) // 在 tb_Dept 表中，插入 Dept 为 部门一 的记录
-
-    // => INSERT INTO `posts`(`title`) VALUES('Hello World');
-
-    console.log(result)
-
-    // 判断插入成功
-    const insertSuccess = result.affectedRows === 1
-    if (insertSuccess == true) {
-      const data = {
-        ip: '192.168.1.1',
-        username: '张三',
-        department: '部门',
-        status: 1, // 0,没有注册；1，可以开始加班；2，已经开始加班
-        msg: '请点击加班'
-      }
-      return { code: 2000, data: data }
-    }
+    // const result = await this.app.mysql.query('tb_Dept', { Dept: '部门一' }) // 在 tb_Dept 表中，插入 Dept 为 部门一 的记录
+    // // => INSERT INTO `posts`(`title`) VALUES('Hello World');
+    // console.log(result)
+    // // 判断插入成功
+    // const insertSuccess = result.affectedRows === 1
+    // if (insertSuccess == true) {
+    //   const data = {
+    //     ip: '192.168.1.1',
+    //     username: '张三',
+    //     department: '部门',
+    //     status: 1, // 0,没有注册；1，可以开始加班；2，已经开始加班
+    //     msg: '请点击加班'
+    //   }
+    //   return { code: 2000, data: data }
+    // }
   }
 
-  async query(tablename, querydata) {
+  async query(tablename, querydata = {}) {
     // const results = await this.app.mysql.select('posts', { // 搜索 post 表
     //     where: { status: 'draft', author: ['author1', 'author2'] }, // WHERE 条件
     //     columns: ['author', 'title'], // 要查询的表字段
@@ -72,10 +69,8 @@ class UserService extends Service {
 
     return insertSuccess
   }
-// 登录服务
-  async login(msg){
-    
-  }
+  // 登录服务
+  async login(msg) {}
 }
 
 module.exports = UserService
