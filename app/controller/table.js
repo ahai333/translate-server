@@ -30,7 +30,7 @@ class TableController extends Controller {
     }
 
     const results = await this.app.mysql.query(sqlstring)
-    console.log(results)
+  //  console.log(results)
 
     // 转换格式
     for (let i = 0; i < results.length; i++) {
@@ -47,9 +47,10 @@ class TableController extends Controller {
   }
   // 获取部门列表
   async getdepts() {
-    const results = await this.app.mysql.select('tb_dept')
+    const { ctx } = this
 
-    console.log(results)
+    const results = await ctx.service.query.getdepts()
+
     this.ctx.body = {
       code: 20000,
       data: results,
@@ -60,21 +61,12 @@ class TableController extends Controller {
   // 获取人员列表
   async getnames() {
     const { ctx } = this
-    console.log(ctx.params.depart, 'getnames')
-    let results = {}
-    if (ctx.params.depart == '' || typeof ctx.params.depart == 'undefined') {
-      results = await this.app.mysql.select('tb_user')
-    } else {
-      let querydata = {
-        where: { Dept: ctx.params.depart }
-      }
-      results = await this.app.mysql.select('tb_user', querydata)
-    }
 
-    console.log(results)
+    let names = await ctx.service.query.getnames(ctx.params.depart)
+
     this.ctx.body = {
       code: 20000,
-      data: results,
+      data: names,
       msg: '获取人员列表成功'
     }
   }

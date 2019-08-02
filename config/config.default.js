@@ -39,8 +39,8 @@ module.exports = appInfo => {
 
   config.security = {
     csrf: {
-      enable: false,
-      ignoreJSON: true
+     enable: false,
+    // ignoreJSON: true
     },
     domainWhiteList: ['http://localhost:9528/', 'http://192.168.232.131']
   }
