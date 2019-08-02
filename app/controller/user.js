@@ -207,7 +207,7 @@ class UserController extends Controller {
         introduction: 'I am a super administrator',
         avatar:
           'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-        name: 'Super Admin'
+        name: '管理员'
       },
       'editor-token': {
         roles: ['editor'],
@@ -225,6 +225,14 @@ class UserController extends Controller {
     ctx.body = {
       code: 20000,
       data: info
+    }
+  }
+
+  // 注销
+  async logout() {
+    this.ctx.body = {
+      code: 20000,
+      data: 'success'
     }
   }
 }

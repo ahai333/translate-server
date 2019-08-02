@@ -10,8 +10,14 @@ module.exports = app => {
   router.get('/user/start', controller.user.start)
   router.get('/user/end', controller.user.end)
   router.post('/user/login', controller.user.login)
+  router.post('/user/logout', controller.user.logout)
   router.get('/user/info', controller.user.info)
+
   router.post('/table/records', controller.table.records)
   router.get('/table/getdepts', controller.table.getdepts)
   router.get('/table/getnames', controller.table.getnames)
+
+  router.post('/statis/total', controller.statis.records)
+  router.post('/statis/detail', controller.statis.detail) 
+
 }

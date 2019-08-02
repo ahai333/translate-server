@@ -12,6 +12,7 @@
     "egg-cors": "^2.2.0",
     "egg-mysql": "^3.0.0",
     "egg-scripts": "^2.11.0",
+    "egg-security": "^2.5.0",
     "egg-view-vue-ssr": "^3.3.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7"

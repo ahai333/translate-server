@@ -42,7 +42,7 @@ class TableController extends Controller {
     ctx.body = {
       code: 20000,
       data: results,
-      msg: '获取加班记录成功'
+      msg: `获取${results.length}条加班记录`
     }
   }
   // 获取部门列表
@@ -60,11 +60,17 @@ class TableController extends Controller {
   // 获取人员列表
   async getnames() {
     const { ctx } = this
-    console.log(ctx.params)
-    const querydata = {
-      where: { Dept: ctx.params.depart }
+    console.log(ctx.params.depart, 'getnames')
+    let results = {}
+    if (ctx.params.depart == '' || typeof ctx.params.depart == 'undefined') {
+      results = await this.app.mysql.select('tb_user')
+    } else {
+      let querydata = {
+        where: { Dept: ctx.params.depart }
+      }
+      results = await this.app.mysql.select('tb_user', querydata)
     }
-    const results = await this.app.mysql.select('tb_user', querydata)
+
     console.log(results)
     this.ctx.body = {
       code: 20000,
