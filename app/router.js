@@ -16,6 +16,7 @@ module.exports = app => {
   router.post('/table/records', controller.table.records)
   router.get('/table/getdepts', controller.table.getdepts)
   router.get('/table/getnames', controller.table.getnames)
+  router.get('/table/workinglist', controller.table.workinglist)
 
   router.post('/statis/total', controller.statis.total)
   router.post('/statis/detail', controller.statis.detail)

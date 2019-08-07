@@ -74,7 +74,7 @@ class UserController extends Controller {
   async start() {
     const { ctx } = this
     const tablename = 'tb_order'
-    const time = new Date().toLocaleString()
+    const time = new Date()
     const { Uname, IpAddr, Dept } = ctx.query
     console.log(ctx.query, 'ctx.query')
 
@@ -98,7 +98,7 @@ class UserController extends Controller {
           username: Uname,
           department: Dept,
           status: 2, // 0,没有注册；1，可以开始加班；2，已经开始加班
-          msg: '加班开始时间：' + time
+          msg: '加班开始时间：' + time.toLocaleString()
         }
       }
     } else {
@@ -116,7 +116,7 @@ class UserController extends Controller {
   async end() {
     const { ctx } = this
     const tablename = 'tb_order'
-    const time = new Date().toLocaleString()
+    const time = new Date()
 
     let stat = 2
     let msg = '错误！'
@@ -135,9 +135,9 @@ class UserController extends Controller {
     if (r.results.length == 1) {
       if (r.results[0].EndTime - r.results[0].StartTime == 0) {
         const total = new Date() - r.results[0].StartTime
-        const t = new Date(0, 0, 1, 0, 0, 0, total).toLocaleString()
+        const t = new Date(0, 0, 1, 0, 0, 0, total)
         querydata = {
-          EndTime: new Date().toLocaleString(),
+          EndTime: new Date(),
           TotalTime: t, // 兼容上个版本
           duration: total
         }

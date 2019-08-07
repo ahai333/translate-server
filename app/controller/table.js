@@ -30,7 +30,7 @@ class TableController extends Controller {
     }
 
     const results = await this.app.mysql.query(sqlstring)
-  //  console.log(results)
+    //  console.log(results)
 
     // 转换格式
     for (let i = 0; i < results.length; i++) {
@@ -53,7 +53,8 @@ class TableController extends Controller {
 
     this.ctx.body = {
       code: 20000,
-      data: results,
+      data: results.departs,
+      count: results.count,
       msg: '获取部门列表成功'
     }
   }
@@ -68,6 +69,21 @@ class TableController extends Controller {
       code: 20000,
       data: names,
       msg: '获取人员列表成功'
+    }
+  }
+
+  // 获取加班人员列表
+  async workinglist() {
+    const { ctx } = this
+
+    const { depart } = ctx.params
+
+    let results = await ctx.service.query.workinglist(depart)
+
+    this.ctx.body = {
+      code: 20000,
+      data: results,
+      msg: '获取加班人员列表成功'
     }
   }
 }
