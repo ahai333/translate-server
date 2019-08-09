@@ -50,9 +50,9 @@ class QueryService extends Service {
     let ret = []
     results.forEach(record => {
 
-      ret.push([
+      ret.push(
         { name: record.Uname, depart: record.Dept, starttime: record.StartTime }
-      ])
+      )
     })
 
     return ret

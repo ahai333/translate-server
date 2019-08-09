@@ -11,23 +11,21 @@ class TableController extends Controller {
 
     console.log(ctx.params, 'records')
 
-    let sqlstring = 'select * from tb_order '
-    if (name != '' || daterang != '' || depart != '') {
-      sqlstring = sqlstring + ' where '
-      if (name != '') {
-        sqlstring = sqlstring + ` Uname = '${name}' and `
-      }
-      if (daterang != '') {
-        sqlstring =
-          sqlstring +
-          ` StartTime > '${daterang[0]}' and StartTime < '${daterang[1]}' and `
-      }
-      if (depart != '') {
-        sqlstring = sqlstring + ` Dept = '${depart}' `
-      } else {
-        sqlstring = sqlstring.substring(0, sqlstring.length - 4)
-      }
+    let sqlstring = 'select * from tb_order where StartTime <> EndTime '
+    // if (name != '' || daterang != '' || depart != '') {
+    //   sqlstring = sqlstring + ' where '
+    if (name != '') {
+      sqlstring = sqlstring + ` and Uname = '${name}' `
     }
+    if (daterang != '') {
+      sqlstring =
+        sqlstring +
+        ` and StartTime > '${daterang[0]}' and StartTime < '${daterang[1]}' `
+    }
+    if (depart != '') {
+      sqlstring = sqlstring + `  and Dept = '${depart}' `
+    }
+    // }
 
     const results = await this.app.mysql.query(sqlstring)
     //  console.log(results)

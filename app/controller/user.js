@@ -67,7 +67,7 @@ class UserController extends Controller {
         }
       }
     }
-    console.log(ctx.body, 'status')
+    // console.log(ctx.body, 'status')
   }
 
   // 点击“开始加班”
@@ -76,7 +76,6 @@ class UserController extends Controller {
     const tablename = 'tb_order'
     const time = new Date()
     const { Uname, IpAddr, Dept } = ctx.query
-    console.log(ctx.query, 'ctx.query')
 
     //todo:判断格式
 
@@ -131,13 +130,26 @@ class UserController extends Controller {
     }
 
     const r = await ctx.service.user.query(tablename, querydata)
-    console.log(r, 'query')
+    //  console.log(r, 'query')
     if (r.results.length == 1) {
       if (r.results[0].EndTime - r.results[0].StartTime == 0) {
-        const total = new Date() - r.results[0].StartTime
+        let endtime = new Date()
+        let total = endtime - r.results[0].StartTime
+        // 超过8小时，只计2小时
+
+        msg = '本次加班时长：' + ctx.helper.getduration(total)
+
+        if (total > 8 * 60 * 60 * 1000) {
+          msg = '您已超过8小时未点结束，本次加班时长按2小时登记。'
+          endtime = new Date(
+            r.results[0].StartTime.getTime() + 2 * 60 * 60 * 1000
+          )
+          total = endtime - r.results[0].StartTime
+        }
         const t = new Date(0, 0, 1, 0, 0, 0, total)
+
         querydata = {
-          EndTime: new Date(),
+          EndTime: endtime,
           TotalTime: t, // 兼容上个版本
           duration: total
         }
@@ -146,12 +158,12 @@ class UserController extends Controller {
             RdNum: r.results[0].RdNum
           }
         }
-        console.log(querydata, 'end')
+
         const rt = await ctx.service.user.update(tablename, querydata, options)
         if (rt) {
           code = 20000
           stat = 1
-          msg = '本次加班时长：' + ctx.helper.getduration(total)
+          msg = msg
         }
       }
     }
@@ -173,7 +185,6 @@ class UserController extends Controller {
   async login() {
     const { ctx } = this
     const params = ctx.params
-    console.log(params, 'login')
 
     // todo 检测参数是否合理
 
@@ -187,10 +198,22 @@ class UserController extends Controller {
       }
     }
 
-    ctx.body = {
-      code: 20000,
-      data: tokens['admin']
+    if (params.username == 'admin') {
+      if (params.password == '!QAZ2wsx') {
+        ctx.body = {
+          code: 20000,
+          data: tokens['admin']
+        }
+      } else {
+        ctx.body = { code: 60204, message: '登录密码错误' }
+      }
+    } else {
+      ctx.body = {
+        code: 20000,
+        data: tokens['editor']
+      }
     }
+    console.log(ctx.body)
   }
 
   async info() {
@@ -219,8 +242,8 @@ class UserController extends Controller {
     }
 
     const info = users[params.token]
-    console.log(params, 'info')
-    console.log(info, 'info')
+    // console.log(params, 'info')
+    // console.log(info, 'info')
 
     ctx.body = {
       code: 20000,
