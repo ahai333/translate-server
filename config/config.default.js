@@ -23,26 +23,26 @@ module.exports = appInfo => {
     // myAppName: 'egg',
   }
 
-  // 使用MySQL数据库
-  config.mysql = {
-    // 单数据库信息配置
-    client: {
-      host: '192.168.232.131',
-      port: '3306',
-      user: 'test',
-      password: '111111',
-      database: 'order'
-    },
-    app: true,
-    agent: false
-  }
+  // // 使用MySQL数据库
+  // config.mysql = {
+  //   // 单数据库信息配置
+  //   client: {
+  //     host: '192.168.232.131',
+  //     port: '3306',
+  //     user: 'test',
+  //     password: '111111',
+  //     database: 'order'
+  //   },
+  //   app: true,
+  //   agent: false
+  // }
 
   config.security = {
     csrf: {
      enable: false,
     // ignoreJSON: true
     },
-    domainWhiteList: ['http://localhost:9528/', 'http://192.168.232.131']
+    domainWhiteList: ['http://localhost:9528/', 'http://192.168.232.131', 'https://translate.google.cn']
   }
   config.cors = {
     origin: '*',

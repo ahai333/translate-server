@@ -1,5 +1,5 @@
 {
-  "name": "order",
+  "name": "trans",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -7,20 +7,22 @@
     "declarations": true
   },
   "dependencies": {
+    "acorn": "^7.0.0",
+    "acorn-jsx": "^5.0.1",
     "crypto": "^1.0.1",
     "egg": "^2.15.1",
     "egg-cors": "^2.2.0",
     "egg-mysql": "^3.0.0",
     "egg-scripts": "^2.11.0",
     "egg-security": "^2.5.0",
-    "egg-view-vue-ssr": "^3.3.1",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.7"
+    "egg-view-vue": "^1.0.0",
+    "translate.js": "^1.2.7",
+    "translation.js": "^0.7.9"
   },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
-    "egg-bin": "^4.11.0",
+    "egg-bin": "^4.13.1",
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
     "eslint": "^5.13.0",
