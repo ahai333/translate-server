@@ -3,7 +3,6 @@
 const Controller = require('egg').Controller
 
 class UserController extends Controller {
-
   // 登录接口
   async login() {
     const { ctx } = this
@@ -36,13 +35,13 @@ class UserController extends Controller {
         data: tokens['editor']
       }
     }
-    console.log(ctx.body)
+    console.log(ctx.body, 'login')
   }
 
   async info() {
     const { ctx } = this
-    console.log(ctx, 'info0')
     const params = ctx.params
+    console.log(params, 'info0')
 
     // todo 检测参数是否合理
 

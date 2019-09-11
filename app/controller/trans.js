@@ -36,10 +36,14 @@ class TransController extends Controller {
 
     if (code == 20000) {
       if (typeof ret.result != 'undefined') {
+        let trans = ''
+        ret.result.forEach(text => {
+          trans += text + ' '
+        })
         ctx.body = {
           code: 20000,
           data: {
-            text: ret.result,
+            text: trans,
             from: ret.from,
             to: ret.to
           }
@@ -64,7 +68,7 @@ class TransController extends Controller {
   }
 
   /**
-   * 字符串匹配率
+   * 字符串匹配率测试
    */
   async match() {
     const { ctx } = this
@@ -90,8 +94,8 @@ class TransController extends Controller {
     let ret = await ctx.service.matchQuality.trans(source, from, to, engine)
     if (ret.code === 20000) {
       let trans = ''
-      ret.target.forEach(ret => {
-        trans += ret + ' '
+      ret.target.forEach(text => {
+        trans += text + ' '
       })
       let q = await ctx.service.matchQuality.similarity(target, trans)
       // console.log(ret, 'ret')
