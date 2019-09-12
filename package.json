@@ -32,8 +32,8 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-order",
-    "stop": "egg-scripts stop --title=egg-server-order",
+    "start": "egg-scripts start --daemon --title=egg-server-trans",
+    "stop": "egg-scripts stop --title=egg-server-trans",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",

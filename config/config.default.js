@@ -36,13 +36,20 @@ module.exports = appInfo => {
   //   app: true,
   //   agent: false
   // }
+// egg-scripts 启动配置项
+  // exports.cluster = {
+  //   listen: {
+  //     port: 7001,
+  //     hostname: '127.0.0.1',
+  //   }
+  // }
 
   config.security = {
     csrf: {
      enable: false,
     // ignoreJSON: true
     },
-    domainWhiteList: ['http://localhost:9528/', 'http://192.168.232.131', 'https://translate.google.cn']
+    domainWhiteList: ['http://localhost:9528/', 'https://translate.google.cn']
   }
   config.cors = {
     origin: '*',

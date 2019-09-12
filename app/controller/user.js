@@ -30,9 +30,13 @@ class UserController extends Controller {
         ctx.body = { code: 60204, message: '登录密码错误' }
       }
     } else {
-      ctx.body = {
-        code: 20000,
-        data: tokens['editor']
+      if (params.password == '!QAZ2wsx') {
+        ctx.body = {
+          code: 20000,
+          data: tokens['editor']
+        }
+      } else {
+        ctx.body = { code: 60204, message: '登录密码错误' }
       }
     }
     console.log(ctx.body, 'login')
@@ -41,7 +45,7 @@ class UserController extends Controller {
   async info() {
     const { ctx } = this
     const params = ctx.params
-    console.log(params, 'info0')
+    // console.log(params, 'info0')
 
     // todo 检测参数是否合理
 
@@ -50,15 +54,13 @@ class UserController extends Controller {
       'admin-token': {
         roles: ['admin'],
         introduction: 'I am a super administrator',
-        avatar:
-          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        avatar: '/admin.png',
         name: '管理员'
       },
       'editor-token': {
         roles: ['editor'],
         introduction: 'I am an editor',
-        avatar:
-          'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        avatar: '/guest.png',
         name: 'Normal Editor'
       }
     }

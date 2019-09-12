@@ -62,7 +62,7 @@ class MatchQualityService extends Service {
     let regx = /(\-|\+)?\d+(\.\d+)|\s+|([~!@#$%^&*()/\|,.<>?"'();:_+-=\[\]{}，。？‘’“”！·￥……——·])/g
     x = x.replace(regx, '')
     y = y.replace(regx, '')
-    console.log(x, y, 'replace')
+    // console.log(x, y, 'replace')
 
     for (let i = 0; i < ignorables.length; i++) {
       x = x.replace(ignorables[i], '')
@@ -85,7 +85,7 @@ class MatchQualityService extends Service {
     let count = -1
 
     let lcs = LCS(a, b)
-    console.log(lcs, 'lcs')
+    // console.log(lcs, 'lcs')
 
     while (!(lcs.trim() === '') && lcs.length > (longest * 2) / 100) {
       count++
@@ -108,7 +108,7 @@ class MatchQualityService extends Service {
     const { ctx } = this
     console.log(ctx.params)
 
-    const params = { text: source, from: from, to: to }
+    const params = { text: source, from: from, to: to, com: false }
 
     let ret = ''
     switch (engine) {
@@ -120,6 +120,10 @@ class MatchQualityService extends Service {
         break
       case 'youdao':
         ret = await youdao.translate(params)
+        break
+      case 'google(com)':
+        params.com = true
+        ret = await google.translate(params)
         break
       default:
         ret = await google.translate(params)

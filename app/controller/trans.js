@@ -9,7 +9,7 @@ class TransController extends Controller {
     const { engine, data, from, to } = ctx.params
     console.log(ctx.params)
 
-    let params = { text: data, from: from, to: to }
+    let params = { text: data, from: from, to: to, com: false }
 
     let ret = ''
     let code = 20000
