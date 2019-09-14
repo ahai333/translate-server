@@ -54,13 +54,13 @@ class UserController extends Controller {
       'admin-token': {
         roles: ['admin'],
         introduction: 'I am a super administrator',
-        avatar: '/admin.png',
-        name: '管理员'
+        avatar: '/files/admin.png',
+        name: 'administrator'
       },
       'editor-token': {
         roles: ['editor'],
         introduction: 'I am an editor',
-        avatar: '/guest.png',
+        avatar: '/files/guest.png',
         name: 'Normal Editor'
       }
     }
