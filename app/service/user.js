@@ -69,6 +69,28 @@ class UserService extends Service {
 
     return insertSuccess
   }
+
+  /**
+   * 判断记录是否存在
+   * @param {String} tablename
+   * @param {Object} params
+   * 返回 true，表示存在
+   * 返回 false,表示不存在
+   */
+  async existed(tablename = 'users', params = {}) {
+    const querydata = {
+      where: { username: params.username, password: params.password }
+    }
+    // console.log(querydata, 'existed')
+
+    const results = await this.app.mysql.select(tablename, querydata)
+
+    if (results.length > 0) {
+      return true
+    } else {
+      return false
+    }
+  }
   // 登录服务
   async login(msg) {}
 }

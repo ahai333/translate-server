@@ -11,41 +11,48 @@ class UserController extends Controller {
     // todo 检测参数是否合理
 
     //测试
-    const tokens = {
+    let tokens = {
       admin: {
-        token: 'admin-token'
+        token: 'admin-token',
+        name: 'admin'
       },
       editor: {
-        token: 'editor-token'
+        token: 'editor-token',
+        name: 'edit'
       }
     }
+    const res = await ctx.service.user.existed('users', params)
 
-    if (params.username == 'admin') {
-      if (params.password == '!QAZ2wsx') {
-        ctx.body = {
-          code: 20000,
-          data: tokens['admin']
-        }
-      } else {
-        ctx.body = { code: 60204, message: '登录密码错误' }
+    // console.log(params, res, 'login')
+    if (res === true) {
+      let querydata = {
+        where: params,
+        limit: 1,
+        offset: 0
+      }
+      const ret = await ctx.service.user.query('users', querydata)
+      // console.log(ret, 'ret')
+      console.log(ret.results[0], 'ret0')
+
+      tokens[ret.results[0].role].name = ret.results[0].username
+
+      console.log(tokens[ret.results[0].role], 'ret')
+      ctx.body = {
+        code: 20000,
+        data: tokens[ret.results[0].role],
+        msg: '登录成功'
       }
     } else {
-      if (params.password == '!QAZ2wsx') {
-        ctx.body = {
-          code: 20000,
-          data: tokens['editor']
-        }
-      } else {
-        ctx.body = { code: 60204, message: '登录密码错误' }
-      }
+      ctx.body = { code: 60204, message: '登录密码错误' }
     }
-    console.log(ctx.body, 'login')
+
+    // console.log(ctx.body, 'login')
   }
 
   async info() {
     const { ctx } = this
     const params = ctx.params
-    // console.log(params, 'info0')
+    console.log(params, 'info0')
 
     // todo 检测参数是否合理
 
@@ -54,18 +61,19 @@ class UserController extends Controller {
       'admin-token': {
         roles: ['admin'],
         introduction: 'I am a super administrator',
-        avatar: '/files/admin.png',
+        avatar: '/images/admin.png',
         name: 'administrator'
       },
       'editor-token': {
         roles: ['editor'],
         introduction: 'I am an editor',
-        avatar: '/files/guest.png',
+        avatar: '/images/guest.png',
         name: 'Normal Editor'
       }
     }
 
     const info = users[params.token]
+
     // console.log(params, 'info')
     // console.log(info, 'info')
 

@@ -6,23 +6,18 @@
 module.exports = app => {
   const { router, controller } = app
   router.get('/', controller.home.index)
-  // router.get('/user/status', controller.user.status)
-  // router.get('/user/start', controller.user.start)
-  // router.get('/user/end', controller.user.end)
+
   router.post('/user/login', controller.user.login)
   router.post('/user/logout', controller.user.logout)
   router.get('/user/info', controller.user.info)
 
-  // router.post('/table/records', controller.table.records)
-  // router.get('/table/getdepts', controller.table.getdepts)
-  // router.get('/table/getnames', controller.table.getnames)
-  // router.get('/table/workinglist', controller.table.workinglist)
-
-  // router.post('/statis/total', controller.statis.total)
-  // router.post('/statis/detail', controller.statis.detail)
 
   // 翻译相关
   router.get('/v1/trans', controller.trans.test)
   router.get('/v1/match', controller.trans.match)
   router.get('/v1/quality', controller.trans.quality)
+
+  router.get('/sys/admin', controller.sys.admin)
+  router.post('/sys/modifyadmin', controller.sys.modifyadmin)
+  router.post('/sys/deladmin', controller.sys.deladmin)
 }

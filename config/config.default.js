@@ -23,19 +23,19 @@ module.exports = appInfo => {
     // myAppName: 'egg',
   }
 
-  // // 使用MySQL数据库
-  // config.mysql = {
-  //   // 单数据库信息配置
-  //   client: {
-  //     host: '192.168.232.131',
-  //     port: '3306',
-  //     user: 'test',
-  //     password: '111111',
-  //     database: 'order'
-  //   },
-  //   app: true,
-  //   agent: false
-  // }
+  // 使用MySQL数据库
+  config.mysql = {
+    // 单数据库信息配置
+    client: {
+      host: '192.168.232.131',
+      port: '3306',
+      user: 'test',
+      password: '111111',
+      database: 'fanyid'
+    },
+    app: true,
+    agent: false
+  }
 // egg-scripts 启动配置项
   // exports.cluster = {
   //   listen: {
