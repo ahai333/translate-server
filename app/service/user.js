@@ -79,7 +79,7 @@ class UserService extends Service {
    */
   async existed(tablename = 'users', params = {}) {
     const querydata = {
-      where: { username: params.username, password: params.password }
+      where: params
     }
     // console.log(querydata, 'existed')
 

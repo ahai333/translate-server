@@ -54,6 +54,9 @@ class MatchQualityService extends Service {
   //   }
 
   async similarity(x, y) {
+    if (x.length === 0 || y.length === 0) {
+      return 0
+    }
     let ignorables = loadIgnorables()
 
     let result = 0

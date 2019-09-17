@@ -81,7 +81,7 @@ class TransController extends Controller {
     // let ret = matchq.similarity('this is a test', 'this is the test')
     ctx.body = {
       code: ret,
-      msg: '计算匹配率!'
+      msg: '计算相似度!'
     }
   }
 
@@ -103,14 +103,14 @@ class TransController extends Controller {
       // let ret = matchq.similarity('this is a test', 'this is the test')
       ctx.body = {
         code: 20000,
-        data: { text: trans, quality: q.toFixed(3) },
-        msg: '计算匹配率成功!'
+        data: { text: trans, quality: q.toFixed(2) },
+        msg: '计算相似度成功!'
       }
     } else {
       ctx.body = {
         code: 50000,
         data: q.target,
-        msg: '计算匹配率!'
+        msg: '计算相似度!'
       }
     }
   }

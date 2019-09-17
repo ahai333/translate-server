@@ -23,7 +23,7 @@ class UserController extends Controller {
     }
     const res = await ctx.service.user.existed('users', params)
 
-    // console.log(params, res, 'login')
+    console.log(params, res, 'login')
     if (res === true) {
       let querydata = {
         where: params,
@@ -39,7 +39,8 @@ class UserController extends Controller {
       console.log(tokens[ret.results[0].role], 'ret')
       ctx.body = {
         code: 20000,
-        data: tokens[ret.results[0].role],
+        // data: tokens[ret.results[0].role],
+        data: { token: ret.results[0].username },
         msg: '登录成功'
       }
     } else {
@@ -72,14 +73,40 @@ class UserController extends Controller {
       }
     }
 
-    const info = users[params.token]
+    // const info = users[params.token]
+    // ctx.body = {
+    //   code: 20000,
+    //   data: info
+    // }
+    const p = { username: params.token }
+    const res = await ctx.service.user.existed('users', p)
+    console.log(p, res, 'res')
 
-    // console.log(params, 'info')
-    // console.log(info, 'info')
+    if (res === true) {
+      let querydata = {
+        where: { username: params.token },
+        limit: 1,
+        offset: 0
+      }
+      const ret = await ctx.service.user.query('users', querydata)
+      let info = {
+        roles: [ret.results[0].role],
+        introduction: ret.results[0].remarks,
+        avatar: '/images/guest2.jpg',
+        name: ret.results[0].name
+      }
+      // console.log(params, 'info')
+      console.log(info, 'info')
 
-    ctx.body = {
-      code: 20000,
-      data: info
+      ctx.body = {
+        code: 20000,
+        data: info
+      }
+    } else {
+      ctx.body = {
+        code: 50000,
+        data: 'error!'
+      }
     }
   }
 
