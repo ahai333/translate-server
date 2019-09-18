@@ -11,7 +11,6 @@ module.exports = app => {
   router.post('/user/logout', controller.user.logout)
   router.get('/user/info', controller.user.info)
 
-
   // 翻译相关
   router.get('/v1/trans', controller.trans.test)
   router.get('/v1/match', controller.trans.match)
@@ -20,4 +19,10 @@ module.exports = app => {
   router.get('/sys/admin', controller.sys.admin)
   router.post('/sys/modifyadmin', controller.sys.modifyadmin)
   router.post('/sys/deladmin', controller.sys.deladmin)
+
+  router.get('/sys/startlog', controller.sys.startlog)
+  router.get('/sys/endlog', controller.sys.endlog)
+
+  router.post('/log/opt', controller.syslog.loglist)
+  router.post('/log/detail', controller.syslog.detail)
 }

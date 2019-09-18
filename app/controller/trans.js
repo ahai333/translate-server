@@ -90,7 +90,7 @@ class TransController extends Controller {
    */
   async quality() {
     const { ctx } = this
-    let { source, target, from, to, engine } = ctx.params
+    let { source, target, from, to, engine, opt_id } = ctx.params
     let ret = await ctx.service.matchQuality.trans(source, from, to, engine)
     if (ret.code === 20000) {
       let trans = ''
@@ -100,17 +100,27 @@ class TransController extends Controller {
       let q = await ctx.service.matchQuality.similarity(target, trans)
       // console.log(ret, 'ret')
 
-      // let ret = matchq.similarity('this is a test', 'this is the test')
+      // 写日志，similarity表中
+      let param = {
+        opt_id: opt_id,
+        source: source,
+        target: target,
+        mt: trans,
+        similarity: q.toFixed(2),
+        remarks: ''
+      }
+      const res = await ctx.service.sys.insert(param, 'similarity')
+
       ctx.body = {
         code: 20000,
-        data: { text: trans, quality: q.toFixed(2) },
+        data: { text: trans, quality: q.toFixed(2), log: res.data },
         msg: '计算相似度成功!'
       }
     } else {
       ctx.body = {
         code: 50000,
         data: q.target,
-        msg: '计算相似度!'
+        msg: '计算相似度失败!'
       }
     }
   }

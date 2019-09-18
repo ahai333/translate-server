@@ -13,9 +13,46 @@ class SysService extends Service {
       where: param
     }
     results = await this.app.mysql.select(tablename, querydata)
-    // console.log(results, 'results')
+    console.log(results, 'results')
 
     return { data: results, count: results.length }
+  }
+
+  async insert(param = {}, tablename) {
+    const result = await this.app.mysql.insert(tablename, param) // 在 tablename 表中，插入 记录
+
+    // 判断插入成功
+    const insertSuccess = result.affectedRows === 1
+    const ret = { data: true, msg: '' }
+    if (insertSuccess) {
+      ret.data = true
+      ret.msg = '添加成功'
+    } else {
+      ret.data = false
+      ret.msg = '添加失败'
+    }
+    // console.log(ret, 'modifyserver0')
+    return ret
+  }
+
+  async update(param = {}, tablename) {
+    const ret = { data: true, msg: '' }
+    const options = {
+      where: { uuid: param.uuid }
+    }
+    const result = await this.app.mysql.update(tablename, param, options) // 在 tablename 表中，插入 记录
+
+    // 判断更新成功
+    const insertSuccess = result.affectedRows === 1
+    if (insertSuccess) {
+      ret.data = true
+      ret.msg = '更新成功'
+    } else {
+      ret.data = false
+      ret.msg = '更新失败'
+    }
+    // console.log(ret, 'modifyserver1')
+    return ret
   }
   /**
    *
@@ -25,6 +62,7 @@ class SysService extends Service {
     const ret = { data: true, msg: '' }
     if (param.uuid === 0) {
       const result = await this.app.mysql.insert(tablename, param) // 在 tablename 表中，插入 记录
+      console.log(result, 'modify')
 
       // 判断插入成功
       const insertSuccess = result.affectedRows === 1
@@ -33,10 +71,10 @@ class SysService extends Service {
         ret.data = true
         ret.msg = '添加成功'
       } else {
-        ret.data = true
+        ret.data = false
         ret.msg = '添加失败'
       }
-      console.log(ret, 'modifyserver0')
+      // console.log(ret, 'modifyserver0')
       return ret
     } else {
       const options = {
@@ -50,10 +88,10 @@ class SysService extends Service {
         ret.data = true
         ret.msg = '修改成功'
       } else {
-        ret.data = true
+        ret.data = false
         ret.msg = '修改失败'
       }
-      console.log(ret, 'modifyserver1')
+      // console.log(ret, 'modifyserver1')
       return ret
     }
   }
