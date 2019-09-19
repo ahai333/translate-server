@@ -12,8 +12,9 @@ class SysService extends Service {
     const querydata = {
       where: param
     }
+    // console.log(querydata, 'list0')
     results = await this.app.mysql.select(tablename, querydata)
-    console.log(results, 'results')
+    // console.log(results, 'list1')
 
     return { data: results, count: results.length }
   }

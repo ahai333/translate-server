@@ -12,7 +12,10 @@ class SyslogController extends Controller {
     if (rt.count === 1) {
       const user_id = rt.data[0].uuid
 
-      const results = await ctx.service.sys.list({ user_id: user_id }, 'opt_log')
+      const results = await ctx.service.sys.list(
+        { user_id: user_id },
+        'opt_log'
+      )
 
       ctx.body = {
         code: 20000,
@@ -31,15 +34,24 @@ class SyslogController extends Controller {
   async detail() {
     const { ctx } = this
     const param = ctx.params
-    // console.log(param, 'admin')
+    console.log(param, 'detail')
 
-    const results = await ctx.service.sys.list(param, 'opt_log')
+    if (typeof param.opt_id !== 'undefined') {
+      const results = await ctx.service.sys.list(param, 'similarity')
 
-    this.ctx.body = {
-      code: 20000,
-      data: results.data,
-      count: results.count,
-      msg: '获取列表成功'
+      ctx.body = {
+        code: 20000,
+        data: results.data,
+        count: results.count,
+        msg: '获取列表成功'
+      }
+    } else {
+      ctx.body = {
+        code: 50000,
+        data: results.data,
+        count: results.count,
+        msg: '获取列表失败'
+      }
     }
   }
 }
