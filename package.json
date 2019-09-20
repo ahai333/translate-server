@@ -16,6 +16,7 @@
     "egg-scripts": "^2.11.0",
     "egg-security": "^2.5.0",
     "egg-view-vue": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
     "translate.js": "^1.2.7",
     "translation.js": "^0.7.9"
   },

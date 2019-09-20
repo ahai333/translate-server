@@ -16,7 +16,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1564104215026_549'
 
   // add your middleware config here
-  config.middleware = ['params']
+  config.middleware = ['params', 'jwt']
 
   // add your user config here
   const userConfig = {
@@ -43,6 +43,11 @@ module.exports = appInfo => {
     app: true,
     agent: false
   }
+
+  config.jwt = {
+    enable: true,
+    ignore: ['/user/login', '/user/logout'] // 哪些请求不需要认证
+  }
   // egg-scripts 启动配置项
   // exports.cluster = {
   //   listen: {
@@ -67,4 +72,12 @@ module.exports = appInfo => {
     ...config,
     ...userConfig
   }
+}
+
+exports.session = {
+  key: 'FANYID_SESS_2019', //eggjs默认session的key
+  maxAge: 24 * 3600 * 1000, // 1 day
+  httpOnly: true,
+  encrypt: true,
+  renew: true //每次访问页面都会给session会话延长时间
 }

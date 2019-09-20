@@ -1,4 +1,7 @@
 'use strict'
+const fs = require('fs')
+const path = require('path')
+const jwt = require('jsonwebtoken') //引入jsonwebtoken
 const Crypto = require('crypto')
 
 module.exports = {
@@ -40,10 +43,10 @@ module.exports = {
         //获取小时后取佘的分，获取分钟除以60取佘的分
         minuteTime = parseInt(minuteTime % 60)
 
-        if(hourTime > 24){
-            DayTime = parseInt(hourTime / 24)
+        if (hourTime > 24) {
+          DayTime = parseInt(hourTime / 24)
 
-            hourTime = parseInt(minuteTime % 24)
+          hourTime = parseInt(minuteTime % 24)
         }
       }
     }
@@ -56,8 +59,21 @@ module.exports = {
       result = '' + parseInt(hourTime) + '小时' + result
     }
     if (DayTime > 0) {
-        result = '' + parseInt(DayTime) + '天' + result
-      }
+      result = '' + parseInt(DayTime) + '天' + result
+    }
     return result
+  },
+  /**
+   * 生成jwt
+   * @param {Object} data
+   * @param {number} expires
+   */
+  loginToken(data, expires = 7200) {
+    const exp = Math.floor(Date.now() / 1000) + expires
+    const cert = fs.readFileSync(
+      path.join(__dirname, '../public/rsa_private_key.pem')
+    ) // 私钥
+    const token = jwt.sign({ data, exp }, cert, { algorithm: 'RS256' })
+    return token
   }
 }

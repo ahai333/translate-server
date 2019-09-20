@@ -8,22 +8,9 @@ class UserController extends Controller {
     const { ctx } = this
     const params = ctx.params
 
-    // todo 检测参数是否合理
-
-    //测试
-    let tokens = {
-      admin: {
-        token: 'admin-token',
-        name: 'admin'
-      },
-      editor: {
-        token: 'editor-token',
-        name: 'edit'
-      }
-    }
     const res = await ctx.service.user.existed('users', params)
 
-    console.log(params, res, 'login')
+    // console.log(params, res, 'login')
     if (res === true) {
       let querydata = {
         where: params,
@@ -32,15 +19,17 @@ class UserController extends Controller {
       }
       const ret = await ctx.service.user.query('users', querydata)
       // console.log(ret, 'ret')
-      console.log(ret.results[0], 'ret0')
+      // console.log(ret.results[0], 'ret0')
 
-      tokens[ret.results[0].role].name = ret.results[0].username
+      const token = ctx.helper.loginToken(
+        { username: ret.results[0].username, userid: ret.results[0].uuid },
+        7200
+      ) // token生成，保存username和userid信息
+      // ctx.session[ret.results[0].username + ret.results[0].uuid] = token // 保存token用于后续与客户端校验
 
-      console.log(tokens[ret.results[0].role], 'ret')
       ctx.body = {
         code: 20000,
-        // data: tokens[ret.results[0].role],
-        data: { token: ret.results[0].username },
+        data: { token: ret.results[0].username, auth: token },
         msg: '登录成功'
       }
     } else {
@@ -53,34 +42,12 @@ class UserController extends Controller {
   async info() {
     const { ctx } = this
     const params = ctx.params
-    console.log(params, 'info0')
 
     // todo 检测参数是否合理
 
-    //测试
-    const users = {
-      'admin-token': {
-        roles: ['admin'],
-        introduction: 'I am a super administrator',
-        avatar: '/images/admin.png',
-        name: 'administrator'
-      },
-      'editor-token': {
-        roles: ['editor'],
-        introduction: 'I am an editor',
-        avatar: '/images/guest.png',
-        name: 'Normal Editor'
-      }
-    }
-
-    // const info = users[params.token]
-    // ctx.body = {
-    //   code: 20000,
-    //   data: info
-    // }
     const p = { username: params.token }
     const res = await ctx.service.user.existed('users', p)
-    console.log(p, res, 'res')
+    // console.log(p, res, 'res')
 
     if (res === true) {
       let querydata = {
@@ -95,8 +62,6 @@ class UserController extends Controller {
         avatar: '/images/guest2.jpg',
         name: ret.results[0].name
       }
-      // console.log(params, 'info')
-      console.log(info, 'info')
 
       ctx.body = {
         code: 20000,
