@@ -14,6 +14,7 @@ class SimilarityController extends Controller {
         trans += text + ' '
       })
       let q = await ctx.service.similarity.similarity(target, trans)
+      let p = ((1 * source.length) / target.length).toFixed(4)
 
       // 写详细日志，similarity_detail表中
       let param = {
@@ -25,7 +26,7 @@ class SimilarityController extends Controller {
         mt: trans,
         mtlen: trans.length,
         similarity: q.toFixed(2),
-        remarks: ''
+        remarks: p.toString()
       }
       const res = await ctx.service.sys.insert(param, 'similarity_detail')
 
