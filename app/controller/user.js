@@ -22,14 +22,14 @@ class UserController extends Controller {
       // console.log(ret.results[0], 'ret0')
 
       const token = ctx.helper.loginToken(
-        { username: ret.results[0].username, userid: ret.results[0].uuid },
+        { username: ret.results[0].username, user_id: ret.results[0].uuid },
         7200
       ) // token生成，保存username和userid信息
       // ctx.session[ret.results[0].username + ret.results[0].uuid] = token // 保存token用于后续与客户端校验
 
       ctx.body = {
         code: 20000,
-        data: { token: ret.results[0].username, auth: token },
+        data: { token: ret.results[0].username, user_id: ret.results[0].uuid, auth: token },
         msg: '登录成功'
       }
     } else {

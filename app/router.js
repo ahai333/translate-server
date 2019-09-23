@@ -14,14 +14,17 @@ module.exports = app => {
   // 翻译相关
   router.get('/v1/trans', controller.trans.test)
   router.get('/v1/match', controller.trans.match)
-  router.get('/v1/quality', controller.trans.quality)
+  // router.get('/v1/quality', controller.trans.quality)
 
   router.get('/sys/admin', controller.sys.admin)
   router.post('/sys/modifyadmin', controller.sys.modifyadmin)
   router.post('/sys/deladmin', controller.sys.deladmin)
 
-  router.get('/sys/startlog', controller.sys.startlog)
-  router.get('/sys/endlog', controller.sys.endlog)
+  // router.get('/sys/startlog', controller.sys.startlog)
+  // router.get('/sys/endlog', controller.sys.endlog)
+  router.get('/v1/quality', controller.similarity.do)
+  router.get('/sys/startlog', controller.similarity.startlog)
+  router.get('/sys/endlog', controller.similarity.endlog)
 
   router.post('/log/opt', controller.syslog.loglist)
   router.post('/log/detail', controller.syslog.detail)

@@ -3,18 +3,21 @@
 const Controller = require('egg').Controller
 
 class SyslogController extends Controller {
+  /**
+   * param：{user_id: '2', tablename: 'similarity_log'}
+   */
   async loglist() {
     const { ctx } = this
     const param = ctx.params
     // console.log(param, 'admin')
-    const rt = await ctx.service.sys.list(param, 'users')
+    const rt = await ctx.service.sys.list({ uuid: param.user_id }, 'users')
 
     if (rt.count === 1) {
       const user_id = rt.data[0].uuid
 
       const results = await ctx.service.sys.list(
         { user_id: user_id },
-        'opt_log'
+        param.tablename
       )
 
       ctx.body = {
@@ -36,8 +39,14 @@ class SyslogController extends Controller {
     const param = ctx.params
     console.log(param, 'detail')
 
-    if (typeof param.opt_id !== 'undefined') {
-      const results = await ctx.service.sys.list(param, 'similarity')
+    if (
+      typeof param.opt_id !== 'undefined' &&
+      typeof param.tablename !== 'undefined'
+    ) {
+      const results = await ctx.service.sys.list(
+        { opt_id: param.opt_id },
+        param.tablename
+      )
 
       ctx.body = {
         code: 20000,
@@ -48,8 +57,6 @@ class SyslogController extends Controller {
     } else {
       ctx.body = {
         code: 50000,
-        data: results.data,
-        count: results.count,
         msg: '获取列表失败'
       }
     }

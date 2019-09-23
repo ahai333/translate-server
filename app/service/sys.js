@@ -1,10 +1,11 @@
 'use strict'
 
 const Service = require('egg').Service
+const { youdao, baidu, google } = require('translation.js')
 
 class SysService extends Service {
   /**
-   * 查询
+   * 表查询
    */
   async list(param = {}, tablename) {
     let results = []
@@ -18,7 +19,11 @@ class SysService extends Service {
 
     return { data: results, count: results.length }
   }
-
+  /**
+   * 表插入记录
+   * @param {object}} param
+   * @param {String} tablename
+   */
   async insert(param = {}, tablename) {
     const result = await this.app.mysql.insert(tablename, param) // 在 tablename 表中，插入 记录
 
@@ -35,7 +40,11 @@ class SysService extends Service {
     // console.log(ret, 'modifyserver0')
     return ret
   }
-
+  /**
+   * 更新表
+   * @param {Object} param
+   * @param {String} tablename
+   */
   async update(param = {}, tablename) {
     const ret = { data: true, msg: '' }
     const options = {
@@ -98,7 +107,7 @@ class SysService extends Service {
   }
 
   /**
-   *
+   * 判断是否存在
    * @param {Object} param
    * @param {String} tablename
    * @param {Number} uuid
@@ -133,6 +142,49 @@ class SysService extends Service {
       return result.affectedRows
     } else {
       return 0
+    }
+  }
+
+  async trans(source, from = 'en', to = 'zh-CN', engine = 'google') {
+    const { ctx } = this
+    console.log(ctx.params)
+
+    const params = { text: source, from: from, to: to, com: false }
+
+    let ret = ''
+    switch (engine) {
+      case 'google':
+        ret = await google.translate(params)
+        break
+      case 'baidu':
+        ret = await baidu.translate(params)
+        break
+      case 'youdao':
+        ret = await youdao.translate(params)
+        break
+      case 'google(com)':
+        params.com = true
+        ret = await google.translate(params)
+        break
+      default:
+        ret = await google.translate(params)
+        break
+    }
+
+    if (typeof ret.result != 'undefined') {
+      return {
+        code: 20000,
+        target: ret.result
+      }
+    } else {
+      // NETWORK_ERROR - 网络错误，可能是运行环境没有网络连接造成的
+      // API_SERVER_ERROR - 翻译接口返回了错误的数据
+      // UNSUPPORTED_LANG - 接口不支持的语种
+      // NETWORK_TIMEOUT - 查询接口时超时了
+      return {
+        code: 50008,
+        target: ret.code
+      }
     }
   }
 }
