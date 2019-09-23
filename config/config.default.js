@@ -26,20 +26,20 @@ module.exports = appInfo => {
   // 使用MySQL数据库
   config.mysql = {
     // 单数据库信息配置
-    client: {
-      host: '192.168.232.131',
-      port: '3306',
-      user: 'test',
-      password: '111111',
-      database: 'fanyid'
-    },
     // client: {
-    //   host: '192.168.40.134',
+    //   host: '192.168.232.131',
     //   port: '3306',
-    //   user: 'fanyid',
-    //   password: '123456',
+    //   user: 'test',
+    //   password: '111111',
     //   database: 'fanyid'
     // },
+    client: {
+      host: '192.168.40.131',
+      port: '3306',
+      user: 'fanyid',
+      password: '123456',
+      database: 'fanyid'
+    },
     app: true,
     agent: false
   }

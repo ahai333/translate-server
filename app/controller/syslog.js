@@ -6,10 +6,10 @@ class SyslogController extends Controller {
   /**
    * param：{user_id: '2', tablename: 'similarity_log'}
    */
-  async loglist() {
+  async list() {
     const { ctx } = this
     const param = ctx.params
-    // console.log(param, 'admin')
+    console.log(param, 'list')
     const rt = await ctx.service.sys.list({ uuid: param.user_id }, 'users')
 
     if (rt.count === 1) {
@@ -20,6 +20,7 @@ class SyslogController extends Controller {
         param.tablename
       )
 
+      console.log(results.data, 'list1')
       ctx.body = {
         code: 20000,
         data: results.data,
@@ -33,11 +34,12 @@ class SyslogController extends Controller {
       }
     }
   }
-
+  /**
+   * param: { opt_id: opt_id, tablename: 'similarity_log' }
+   */
   async detail() {
     const { ctx } = this
     const param = ctx.params
-    console.log(param, 'detail')
 
     if (
       typeof param.opt_id !== 'undefined' &&

@@ -146,41 +146,47 @@ class SysService extends Service {
   }
 
   async trans(source, from = 'en', to = 'zh-CN', engine = 'google') {
-    const { ctx } = this
-    console.log(ctx.params)
+    if (typeof source === 'string' && source !== '') {
+      const params = { text: source, from: from, to: to, com: false }
 
-    const params = { text: source, from: from, to: to, com: false }
+      let ret = ''
+      switch (engine) {
+        case 'google':
+          ret = await google.translate(params)
+          break
+        case 'baidu':
+          ret = await baidu.translate(params)
+          break
+        case 'youdao':
+          ret = await youdao.translate(params)
+          break
+        case 'google(com)':
+          params.com = true
+          ret = await google.translate(params)
+          break
+        default:
+          ret = await google.translate(params)
+          break
+      }
 
-    let ret = ''
-    switch (engine) {
-      case 'google':
-        ret = await google.translate(params)
-        break
-      case 'baidu':
-        ret = await baidu.translate(params)
-        break
-      case 'youdao':
-        ret = await youdao.translate(params)
-        break
-      case 'google(com)':
-        params.com = true
-        ret = await google.translate(params)
-        break
-      default:
-        ret = await google.translate(params)
-        break
-    }
-
-    if (typeof ret.result != 'undefined') {
-      return {
-        code: 20000,
-        target: ret.result
+      if (typeof ret.result != 'undefined') {
+        return {
+          code: 20000,
+          target: ret.result,
+          from: ret.from,
+          to: ret.to
+        }
+      } else {
+        // NETWORK_ERROR - 网络错误，可能是运行环境没有网络连接造成的
+        // API_SERVER_ERROR - 翻译接口返回了错误的数据
+        // UNSUPPORTED_LANG - 接口不支持的语种
+        // NETWORK_TIMEOUT - 查询接口时超时了
+        return {
+          code: 50008,
+          target: ret.code
+        }
       }
     } else {
-      // NETWORK_ERROR - 网络错误，可能是运行环境没有网络连接造成的
-      // API_SERVER_ERROR - 翻译接口返回了错误的数据
-      // UNSUPPORTED_LANG - 接口不支持的语种
-      // NETWORK_TIMEOUT - 查询接口时超时了
       return {
         code: 50008,
         target: ret.code

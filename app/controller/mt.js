@@ -2,43 +2,43 @@
 
 const Controller = require('egg').Controller
 
-class SimilarityController extends Controller {
+class MtController extends Controller {
   async do() {
     const { ctx } = this
-    let { source, target, from, to, engine, opt_id } = ctx.params
+    let { source, from, to, engine, opt_id } = ctx.params
+    console.log(ctx.params, 'mtdo0')
     let ret = await ctx.service.sys.trans(source, from, to, engine)
+    console.log(ret, 'mtdo')
 
     if (ret.code === 20000) {
       let trans = ''
       ret.target.forEach(text => {
         trans += text + ' '
       })
-      let q = await ctx.service.similarity.similarity(target, trans)
-
+      console.log(trans, 'mtdo1')
       // 写详细日志，similarity_detail表中
       let param = {
         opt_id: opt_id,
         source: source,
         sourcelen: source.length,
-        target: target,
-        targetlen: target.length,
         mt: trans,
         mtlen: trans.length,
-        similarity: q.toFixed(2),
         remarks: ''
       }
-      const res = await ctx.service.sys.insert(param, 'similarity_detail')
+      console.log(param, 'do')
+
+      const res = await ctx.service.sys.insert(param, 'mt_detail')
 
       ctx.body = {
         code: 20000,
-        data: { text: trans, similarity: q.toFixed(2), log: res.data },
-        msg: '计算相似度成功!'
+        data: { text: trans, from: ret.from, to: ret.to },
+        msg: 'success!'
       }
     } else {
       ctx.body = {
         code: 50000,
         data: q.target,
-        msg: '计算相似度失败!'
+        msg: 'failed!'
       }
     }
   }
@@ -51,18 +51,16 @@ class SimilarityController extends Controller {
     const { ctx } = this
     const param = ctx.params
 
-    // console.log(param, 'startlog')
     const results = await ctx.service.sys.list(param, 'users')
 
     if (results.count === 1) {
       const user_id = results.data[0].uuid
       const param = {
         user_id: user_id,
-        // operate: 'similarity',
-        starttime: new Date()
+        starttime: new Date().toLocaleDateString()
       }
 
-      const result = await this.app.mysql.insert('similarity_log', param) // 在 tablename 表中，插入 记录
+      const result = await this.app.mysql.insert('mt_log', param) // 在 tablename 表中，插入 记录
 
       // 判断插入成功
       const insertSuccess = result.affectedRows === 1
@@ -72,7 +70,7 @@ class SimilarityController extends Controller {
           orders: [['starttime', 'desc']],
           limit: 1
         }
-        const rt = await this.app.mysql.select('similarity_log', querydata)
+        const rt = await this.app.mysql.select('mt_log', querydata)
         if (rt.length === 1) {
           ctx.body = {
             code: 20000,
@@ -104,8 +102,8 @@ class SimilarityController extends Controller {
   async endlog() {
     const { ctx } = this
     let param = ctx.params
-    param.endtime = new Date()
-    const results = await ctx.service.sys.update(param, 'similarity_log')
+    param.endtime = new Date().toLocaleDateString()
+    const results = await ctx.service.sys.update(param, 'mt_log')
     ctx.body = {
       code: 20000,
       data: results.data,
@@ -114,4 +112,4 @@ class SimilarityController extends Controller {
   }
 }
 
-module.exports = SimilarityController
+module.exports = MtController
