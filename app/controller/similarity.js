@@ -13,7 +13,9 @@ class SimilarityController extends Controller {
       ret.target.forEach(text => {
         trans += text + ' '
       })
-      let q = await ctx.service.similarity.similarity(target, trans)
+      let q1 = await ctx.service.similarity.calc(target, trans, 'lcs')
+      let q2 = await ctx.service.similarity.calc(target, trans, 'levenshtein')
+      let q3 = await ctx.service.similarity.calc(target, trans, 'simhash')
       let p = ((1 * source.length) / target.length).toFixed(4)
 
       // 写详细日志，similarity_detail表中
@@ -25,20 +27,21 @@ class SimilarityController extends Controller {
         targetlen: target.length,
         mt: trans,
         mtlen: trans.length,
-        similarity: q.toFixed(2),
+        similarity: q1,
+        similarity2: q2,
+        similarity3: q3,
         remarks: p.toString()
       }
       const res = await ctx.service.sys.insert(param, 'similarity_detail')
 
       ctx.body = {
         code: 20000,
-        data: { text: trans, similarity: q.toFixed(2), log: res.data },
+        data: { text: trans, similarity: q1, similarity2: q2, similarity3: q3 },
         msg: '计算相似度成功!'
       }
     } else {
       ctx.body = {
         code: 50000,
-        data: q.target,
         msg: '计算相似度失败!'
       }
     }

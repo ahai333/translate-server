@@ -9,7 +9,6 @@ class SyslogController extends Controller {
   async list() {
     const { ctx } = this
     const param = ctx.params
-    console.log(param, 'list')
     const rt = await ctx.service.sys.list({ uuid: param.user_id }, 'users')
 
     if (rt.count === 1) {
@@ -20,7 +19,6 @@ class SyslogController extends Controller {
         param.tablename
       )
 
-      console.log(results.data, 'list1')
       ctx.body = {
         code: 20000,
         data: results.data,

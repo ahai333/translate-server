@@ -34,7 +34,7 @@ module.exports = appInfo => {
     //   database: 'fanyid'
     // },
     client: {
-      host: '192.168.40.131',
+      host: '192.168.40.134',
       port: '3306',
       user: 'fanyid',
       password: '123456',
@@ -53,7 +53,7 @@ module.exports = appInfo => {
 
   config.jwt = {
     enable: true,
-    ignore: ['/user/login', '/user/logout'] // 哪些请求不需要认证
+    ignore: ['/user/login', '/user/logout', '/v1/simil/do', '/v1/mt/do'] // 哪些请求不需要认证
   }
   // egg-scripts 启动配置项
   // exports.cluster = {

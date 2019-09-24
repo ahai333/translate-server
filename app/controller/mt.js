@@ -6,16 +6,16 @@ class MtController extends Controller {
   async do() {
     const { ctx } = this
     let { source, from, to, engine, opt_id } = ctx.params
-    console.log(ctx.params, 'mtdo0')
+
     let ret = await ctx.service.sys.trans(source, from, to, engine)
-    console.log(ret, 'mtdo')
+
 
     if (ret.code === 20000) {
       let trans = ''
       ret.target.forEach(text => {
         trans += text + ' '
       })
-      console.log(trans, 'mtdo1')
+
       // 写详细日志，similarity_detail表中
       let param = {
         opt_id: opt_id,
@@ -25,7 +25,6 @@ class MtController extends Controller {
         mtlen: trans.length,
         remarks: ''
       }
-      console.log(param, 'do')
 
       const res = await ctx.service.sys.insert(param, 'mt_detail')
 

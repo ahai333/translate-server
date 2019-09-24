@@ -41,6 +41,8 @@ function verifyToken(token) {
     const result = jwt.verify(token, cert, { algorithms: ['RS256'] }) || {}
     const { exp } = result,
       current = Math.floor(Date.now() / 1000)
+    console.log(exp, current, 'verifyToken')
+
     if (current <= exp) res = result.data || {}
   } catch (e) {
     console.log(e)

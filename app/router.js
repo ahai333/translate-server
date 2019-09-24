@@ -20,17 +20,11 @@ module.exports = app => {
   router.post('/sys/modifyadmin', controller.sys.modifyadmin)
   router.post('/sys/deladmin', controller.sys.deladmin)
 
-  // router.get('/sys/startlog', controller.sys.startlog)
-  // router.get('/sys/endlog', controller.sys.endlog)
-  // router.get('/v1/quality', controller.similarity.do)
-  // router.get('/sys/startlog', controller.similarity.startlog)
-  // router.get('/sys/endlog', controller.similarity.endlog)
-
-  router.get('/v1/simil/do', controller.similarity.do)
+  router.post('/v1/simil/do', controller.similarity.do)
   router.get('/v1/simil/startlog', controller.similarity.startlog)
   router.get('/v1/simil/endlog', controller.similarity.endlog)
 
-  router.get('/v1/mt/do', controller.mt.do)
+  router.post('/v1/mt/do', controller.mt.do)
   router.get('/v1/mt/startlog', controller.mt.startlog)
   router.get('/v1/mt/endlog', controller.mt.endlog)
 

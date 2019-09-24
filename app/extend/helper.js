@@ -68,7 +68,7 @@ module.exports = {
    * @param {Object} data
    * @param {number} expires
    */
-  loginToken(data, expires = 7200) {
+  loginToken(data, expires = 72000) {
     const exp = Math.floor(Date.now() / 1000) + expires
     const cert = fs.readFileSync(
       path.join(__dirname, '../public/rsa_private_key.pem')

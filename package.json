@@ -17,12 +17,15 @@
     "egg-security": "^2.5.0",
     "egg-view-vue": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
+    "string-similarity-algorithm": "^1.1.0",
     "translate.js": "^1.2.7",
     "translation.js": "^0.7.9"
   },
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.3",
     "egg-bin": "^4.13.1",
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
