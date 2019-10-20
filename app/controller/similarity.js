@@ -3,6 +3,56 @@
 const Controller = require('egg').Controller
 
 class SimilarityController extends Controller {
+  // 多个翻译引擎翻译
+  async do2() {
+    const { ctx } = this
+    let { source, target, from, to, engines, opt_id } = ctx.params
+
+    const eg = JSON.parse(engines)
+
+    let data = {}
+    for (let i = 0,j=1; i < eg.length; i++,j++) {
+      let ret = await ctx.service.sys.trans(source, from, to, engines[i])
+
+      if (ret.code === 20000) {
+        let trans = ''
+        ret.target.forEach(text => {
+          trans += text + ' '
+        })
+        let q1 = await ctx.service.similarity.calc(target, trans, 'lcs')
+        let q2 = await ctx.service.similarity.calc(target, trans, 'levenshtein')
+        let q3 = await ctx.service.similarity.calc(target, trans, 'simhash')
+        let p = ((1 * source.length) / target.length).toFixed(4)
+        data['trans' + j] = trans
+        data['lcs' + j] = q1
+        data['ld' + j] = q2
+        data['sh' + j] = q3
+
+        // 写详细日志，similarity_detail表中
+        let param = {
+          opt_id: opt_id,
+          source: source,
+          sourcelen: source.length,
+          target: target,
+          targetlen: target.length,
+          mt: trans,
+          mtlen: trans.length,
+          similarity: q1,
+          similarity2: q2,
+          similarity3: q3,
+          remarks: p.toString()
+        }
+        await ctx.service.sys.insert(param, 'similarity_detail')
+      }
+    }
+
+    ctx.body = {
+      code: 20000,
+      data: data,
+      msg: '计算相似度成功!'
+    }
+  }
+
   async do() {
     const { ctx } = this
     let { source, target, from, to, engine, opt_id } = ctx.params
@@ -55,7 +105,6 @@ class SimilarityController extends Controller {
     const { ctx } = this
     const param = ctx.params
 
-    // console.log(param, 'startlog')
     const results = await ctx.service.sys.list(param, 'users')
 
     if (results.count === 1) {

@@ -10,7 +10,13 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
-  const config = (exports = {})
+  const config = (exports = {
+    bodyParser: {
+      //解除文件大小
+      jsonLimit: '50mb',
+      formLimit: '50mb'
+    }
+  })
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1564104215026_549'
@@ -53,7 +59,13 @@ module.exports = appInfo => {
 
   config.jwt = {
     enable: true,
-    ignore: ['/user/login', '/user/logout', '/v1/simil/do', '/v1/mt/do'] // 哪些请求不需要认证
+    ignore: [
+      '/user/login',
+      '/user/logout',
+      '/v1/simil/do',
+      '/v1/mt/do',
+      '/upload/upimage'
+    ] // 哪些请求不需要认证
   }
   // egg-scripts 启动配置项
   // exports.cluster = {

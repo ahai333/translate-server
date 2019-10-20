@@ -9,6 +9,7 @@
   "dependencies": {
     "acorn": "^7.0.0",
     "acorn-jsx": "^5.0.1",
+    "await-stream-ready": "^1.0.1",
     "crypto": "^1.0.1",
     "egg": "^2.15.1",
     "egg-cors": "^2.2.0",

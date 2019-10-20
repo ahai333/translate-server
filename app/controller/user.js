@@ -29,7 +29,11 @@ class UserController extends Controller {
 
       ctx.body = {
         code: 20000,
-        data: { token: ret.results[0].username, user_id: ret.results[0].uuid, auth: token },
+        data: {
+          token: ret.results[0].username,
+          user_id: ret.results[0].uuid,
+          auth: token
+        },
         msg: '登录成功'
       }
     } else {
@@ -80,6 +84,13 @@ class UserController extends Controller {
     this.ctx.body = {
       code: 20000,
       data: 'success'
+    }
+  }
+  // 更改个人资料
+  async updateProfile() {
+    this.ctx.body = {
+      code: 20000,
+      data: 'please wait'
     }
   }
 }

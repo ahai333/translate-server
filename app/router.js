@@ -10,6 +10,7 @@ module.exports = app => {
   router.post('/user/login', controller.user.login)
   router.post('/user/logout', controller.user.logout)
   router.get('/user/info', controller.user.info)
+  router.get('/user/updateProfile', controller.user.updateProfile)
 
   // 翻译相关
   // router.get('/v1/trans', controller.trans.test)
@@ -21,6 +22,7 @@ module.exports = app => {
   router.post('/sys/deladmin', controller.sys.deladmin)
 
   router.post('/v1/simil/do', controller.similarity.do)
+  router.post('/v1/simil/do2', controller.similarity.do2)
   router.get('/v1/simil/startlog', controller.similarity.startlog)
   router.get('/v1/simil/endlog', controller.similarity.endlog)
 
@@ -30,4 +32,6 @@ module.exports = app => {
 
   router.post('/log/list', controller.syslog.list)
   router.post('/log/detail', controller.syslog.detail)
+
+  router.post('/upload/upimage', controller.upload.upimage)
 }
